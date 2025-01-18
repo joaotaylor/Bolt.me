@@ -23,10 +23,10 @@ Bolty is a modern, minimalistic platform for creating and deploying websites bas
 
 ## Screenshots
 Add screenshots here to showcase your project in action.
-
-### Demo
-![Screenshot 1](image-link-1)
-![Screenshot 2](image-link-2)
+![Screenshot 1](https://github.com/hackice20/boltly/blob/main/Screenshot%202025-01-17%20195345.png)
+![Screenshot 2](https://github.com/hackice20/boltly/blob/main/Screenshot%202025-01-17%20200049.png)
+![Screenshot 3](https://github.com/hackice20/boltly/blob/main/Screenshot%202025-01-17%20200505.png)
+![Screenshot 4](https://github.com/hackice20/boltly/blob/main/Screenshot%202025-01-17%20200519.png)
 
 ---
 
