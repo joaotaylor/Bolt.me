@@ -1,6 +1,6 @@
 # Bolty - Bolt.new Inspired Project
 
-Bolty is a modern, minimalistic platform for creating and deploying websites based on user input. It is inspired by [Bolt.new](https://bolt.new) and built following [Harkirat Singh's](https://www.youtube.com/@harkirat1) comprehensive tutorial on the same. This project has an MIT License and is crafted using **Vite**, **React**, **Node.js**, **Express**, **Stackblitz WebContainer API**, **Claude AI API**, and several other libraries.
+Bolty is a modern, minimalistic platform for creating and deploying websites based on user input. It is inspired by [Bolt.new](https://bolt.new) and built following [Harkirat Singh's](https://www.youtube.com/watch?v=ofHGE-85EIA&t=2168s) comprehensive tutorial on the same. This project has an MIT License and is crafted using **Vite**, **React**, **Node.js**, **Express**, **Stackblitz WebContainer API**, **Claude AI API**, and several other libraries.
 
 ## Features
 - **Frontend:**
@@ -31,7 +31,7 @@ Bolty is a modern, minimalistic platform for creating and deploying websites bas
 ---
 
 ## Credits
-- **Tutorial:** [Harkirat Singh](https://www.youtube.com/@harkirat1)
+- **Tutorial:** [Harkirat Singh](https://www.youtube.com/watch?v=ofHGE-85EIA&t=2168s)
 - **Libraries:** Open-source libraries used in the project.
 - **Inspiration:** [Bolt.new](https://bolt.new)
 
