@@ -6,8 +6,13 @@ import { ContentBlock, TextBlock } from "@anthropic-ai/sdk/resources";
 import {basePrompt as nodeBasePrompt} from "./defaults/node";
 import {basePrompt as reactBasePrompt} from "./defaults/react";
 import cors from "cors";
+import dotenv from "dotenv";
+dotenv.config();
 
-const anthropic = new Anthropic();
+const anthropic = new Anthropic({
+    apiKey: process.env.ANTHROPIC_API_KEY,
+});
+
 const app = express();
 app.use(cors())
 app.use(express.json())
@@ -62,4 +67,6 @@ app.post("/chat", async (req, res) => {
     });
 })
 
-app.listen(3000);
+app.listen(3000, () => {
+    console.log("Server is running on port 3000");
+});
