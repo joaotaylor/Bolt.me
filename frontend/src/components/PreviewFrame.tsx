@@ -4,9 +4,10 @@ import React, { useEffect, useState } from 'react';
 interface PreviewFrameProps {
   files: any[];
   webContainer: WebContainer;
+  initialFilesMounted: boolean;
 }
 
-export function PreviewFrame({ files, webContainer }: PreviewFrameProps) {
+export function PreviewFrame({ files, webContainer, initialFilesMounted }: PreviewFrameProps) {
   // In a real implementation, this would compile and render the preview
   const [url, setUrl] = useState("");
 
@@ -31,8 +32,10 @@ export function PreviewFrame({ files, webContainer }: PreviewFrameProps) {
   }
 
   useEffect(() => {
-    main()
-  }, [])
+    if (webContainer && initialFilesMounted) {
+      main();
+    }
+  }, [webContainer, initialFilesMounted])
   return (
     <div className="h-full flex items-center justify-center text-gray-400">
       {!url && <div className="text-center">
