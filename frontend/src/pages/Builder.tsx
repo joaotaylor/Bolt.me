@@ -100,45 +100,45 @@ export function Builder() {
     // Mounting files logic
     const createMountStructure = (files: FileItem[]): Record<string, any> => {
       const mountStructure: Record<string, any> = {};
-      const processFile = (file: FileItem, isRootFolder: boolean) => {
+      
+      const processFile = (file: FileItem): any => {
         if (file.type === 'folder') {
-          mountStructure[file.name] = {
-            directory: file.children ?
-              Object.fromEntries(
-                file.children.map(child => [child.name, processFile(child, false)])
-              )
-              : {}
-          };
-        } else if (file.type === 'file') {
-          if (isRootFolder) {
-            mountStructure[file.name] = {
-              file: {
-                contents: file.content || ''
-              }
-            };
-          } else {
-            return {
-              file: {
-                contents: file.content || ''
-              }
-            };
+          const directory: Record<string, any> = {};
+          if (file.children) {
+            file.children.forEach(child => {
+              directory[child.name] = processFile(child);
+            });
           }
+          return {
+            directory
+          };
+        } else {
+          return {
+            file: {
+              contents: file.content || ''
+            }
+          };
         }
-        return mountStructure[file.name];
       };
 
-      files.forEach(file => processFile(file, true));
+      files.forEach(file => {
+        mountStructure[file.name] = processFile(file);
+      });
 
       return mountStructure;
     };
 
     const mountStructure = createMountStructure(files);
-    if (webcontainer && Object.keys(mountStructure).length > 0) {
+    if (webcontainer && Object.keys(mountStructure).length > 0 && !initialFilesMounted) {
+      console.log('Mounting structure:', mountStructure);
       webcontainer.mount(mountStructure).then(() => {
+        console.log('Files mounted successfully');
         setInitialFilesMounted(true);
+      }).catch((error) => {
+        console.error('Error mounting files:', error);
       });
     }
-  }, [files, webcontainer]);
+  }, [files, webcontainer, initialFilesMounted]);
 
   async function init() {
     const response = await axios.post(`${BACKEND_URL}/template`, {
