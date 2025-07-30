@@ -1,16 +1,15 @@
 require("dotenv").config();
 import express from "express";
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 import { BASE_PROMPT, getSystemPrompt } from "./prompts";
-import { ContentBlock, TextBlock } from "@anthropic-ai/sdk/resources";
 import {basePrompt as nodeBasePrompt} from "./defaults/node";
 import {basePrompt as reactBasePrompt} from "./defaults/react";
 import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
 
-const anthropic = new Anthropic({
-    apiKey: process.env.ANTHROPIC_API_KEY,
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
 });
 
 const app = express();
@@ -20,16 +19,19 @@ app.use(express.json())
 app.post("/template", async (req, res) => {
     const prompt = req.body.prompt;
     
-    const response = await anthropic.messages.create({
-        messages: [{
-            role: 'user', content: prompt
-        }],
-        model: 'claude-3-5-sonnet-20241022',
-        max_tokens: 200,
-        system: "Return either node or react based on what do you think this project should be. Only return a single word either 'node' or 'react'. Do not return anything extra"
-    })
+    const response = await openai.chat.completions.create({
+        model: 'gpt-4.1-2025-04-14',
+        messages: [
+            {
+                role: 'system',
+                content: "Return either node or react based on what do you think this project should be. Only return a single word either 'node' or 'react'. Do not return anything extra"
+            },
+            { role: 'user', content: prompt }
+        ],
+        max_tokens: 200
+    });
 
-    const answer = (response.content[0] as TextBlock).text; // react or node
+    const answer = response.choices[0].message.content?.trim(); // react or node
     if (answer == "react") {
         res.json({
             prompts: [BASE_PROMPT, `Here is an artifact that contains all files of the project visible to you.\nConsider the contents of ALL files in the project.\n\n${reactBasePrompt}\n\nHere is a list of files that exist on the file system but are not being shown to you:\n\n  - .gitignore\n  - package-lock.json\n`],
@@ -53,17 +55,20 @@ app.post("/template", async (req, res) => {
 
 app.post("/chat", async (req, res) => {
     const messages = req.body.messages;
-    const response = await anthropic.messages.create({
-        messages: messages,
-        model: 'claude-3-5-sonnet-20241022',
-        max_tokens: 8000,
-        system: getSystemPrompt()
-    })
+    
+    const response = await openai.chat.completions.create({
+        model: 'gpt-4.1-2025-04-14',
+        messages: [
+            { role: 'system', content: getSystemPrompt() },
+            ...messages
+        ],
+        max_tokens: 8000
+    });
 
     console.log(response);
 
     res.json({
-        response: (response.content[0] as TextBlock)?.text
+        response: response.choices[0].message.content
     });
 })
 
